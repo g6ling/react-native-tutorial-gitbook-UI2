@@ -9,10 +9,34 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  Animated,
+  TouchableOpacity,
 } from 'react-native';
 
 class gitbookTestUI extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      x: new Animated.Value(100),
+    };
+  }
+  click(){
+    if(this.state.x._value == 100){
+      Animated.spring(
+        this.state.x,
+        {toValue: 200}
+      ).start();
+    }
+    else{
+      Animated.timing(
+        this.state.x,
+        {toValue: 100}
+      ).start();
+    }
+
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -28,7 +52,9 @@ class gitbookTestUI extends Component {
         <View style={{backgroundColor: '#FF00AA', flex: 1}}>
           <View style={{position: 'absolute', backgroundColor: '#FFFFFF', right: 30, bottom: 30, height: 30, width: 30}}></View>
         </View>
-        <View style={{position: 'absolute', backgroundColor: '#AAAAAA', right: 40, bottom: 40, height: 30, width: 30}}></View>
+        <TouchableOpacity onPress={this.click.bind(this)}>
+          <Animated.View style={{position: 'absolute', backgroundColor: '#AAAAAA', right: this.state.x, bottom: 40, height: 30, width: 30}}></Animated.View>
+        </TouchableOpacity>
       </View>
     );
   }
