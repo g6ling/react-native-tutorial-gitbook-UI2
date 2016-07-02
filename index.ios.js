@@ -14,11 +14,17 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import Dimensions from 'Dimensions';
+
+const height =  Dimensions.get('window').height;
+const width = Dimensions.get('window').width;
+
 class gitbookTestUI extends Component {
   constructor(props) {
     super(props);
     this.state = {
       x: new Animated.Value(100),
+      popupTop: new Animated.Value(height)
     };
   }
   click(){
@@ -34,7 +40,20 @@ class gitbookTestUI extends Component {
         {toValue: 100}
       ).start();
     }
-
+  }
+  popupOn(){
+    if(this.state.popupTop._value != height){
+      Animated.spring(
+        this.state.popupTop,
+        {toValue: height}
+      ).start();
+    }
+    else{
+      Animated.spring(
+        this.state.popupTop,
+        {toValue: 0}
+      ).start();
+    }
   }
 
   render() {
@@ -54,6 +73,11 @@ class gitbookTestUI extends Component {
         </View>
         <TouchableOpacity onPress={this.click.bind(this)}>
           <Animated.View style={{position: 'absolute', backgroundColor: '#AAAAAA', right: this.state.x, bottom: 40, height: 30, width: 30}}></Animated.View>
+        </TouchableOpacity>
+        <Animated.View style={{position: 'absolute', backgroundColor: '#F0A055', height: height, width: width, top: this.state.popupTop, left: 0}}></Animated.View>
+        <TouchableOpacity onPress={this.popupOn.bind(this)}>
+          <View style={{position: 'absolute', backgroundColor: '#FFFFFF', width: 100, height: 100, borderRadius: 50, bottom: 50, left: 30}}>
+          </View>
         </TouchableOpacity>
       </View>
     );
